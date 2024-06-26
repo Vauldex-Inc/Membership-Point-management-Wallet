@@ -20,15 +20,4 @@ Features
 1.	Digital card storage
 2.	User-friendly interface
 3.	Offline access
-GitLab Repository Structure
-•	src/
-o	main/
-	scala/
-	js/
-	resources/
-o	test/
-•	build/
-•	docs/
-•	configs/
-•	scripts/
-•	README.md
+
