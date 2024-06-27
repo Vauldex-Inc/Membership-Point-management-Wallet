@@ -1,0 +1,68 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+# AUTHENTICATION
+POST      /signup                       		  tech.vauldex.poin.controllers.AuthenticationController.signUp
+PATCH     /merchants/verify/email       		  tech.vauldex.poin.controllers.AuthenticationController.verifyEmail
+POST      /signin                       		  tech.vauldex.poin.controllers.AuthenticationController.signIn
+DELETE    /signout                      		  tech.vauldex.poin.controllers.AuthenticationController.signOut
+POST      /securities/password/forgot   		  tech.vauldex.poin.controllers.AuthenticationController.forgotPasswordLink
+PATCH     /securities/password/reset    		  tech.vauldex.poin.controllers.AuthenticationController.resetPassword
+POST      /merchants/verify/email/resend-code     tech.vauldex.poin.controllers.AuthenticationController.requestEmailCode
+
+# PASS TEMPLATE
+POST      /wallet/passes                tech.vauldex.poin.controllers.PassTemplateController.createPassTemplate
+GET       /template                     tech.vauldex.poin.controllers.PassTemplateController.allMine
+GET       /pass-builder/:id             tech.vauldex.poin.controllers.PassTemplateController.get(id: UUID)
+PATCH     /wallet/passes/:id            tech.vauldex.poin.controllers.PassTemplateController.update(id: UUID)
+GET       /customers                    tech.vauldex.poin.controllers.PassTemplateController.getCustomers
+GET       /customer-pass                tech.vauldex.poin.controllers.PassTemplateController.getAllCustomers
+
+# CUSTOMER
+POST      /customer/:idPassTemplate     		   tech.vauldex.poin.controllers.CustomerController.add(idPassTemplate: UUID, period: Option[String])
+GET       /customer-pass/:id/:idPassTemplate       tech.vauldex.poin.controllers.CustomerController.getPass(id: UUID, idPassTemplate: UUID)
+GET      /pass-links/:idPassTemplate   			   tech.vauldex.poin.controllers.CustomerController.getPassLinks(idPassTemplate: UUID)
+
+# MERCHANT
+GET       /merchants                     	   tech.vauldex.poin.controllers.MerchantController.get
+PATCH     /merchants                     	   tech.vauldex.poin.controllers.MerchantController.update
+PATCH     /merchants/account/password    	   tech.vauldex.poin.controllers.MerchantController.updatePassword
+POST      /merchants/expiry/settings     	   tech.vauldex.poin.controllers.MerchantController.addExpirySettings
+PATCH     /merchants/expiry/settings     	   tech.vauldex.poin.controllers.MerchantController.updateExpirySettings
+PUT      /merchants/points/settings      	   tech.vauldex.poin.controllers.MerchantController.upSertPointSettings
+PATCH     /merchants/points              	   tech.vauldex.poin.controllers.MerchantController.setPoints
+PATCH     /merchants/points/redeem       	   tech.vauldex.poin.controllers.MerchantController.redeemPoints
+GET       /merchants/expiry/settings     	   tech.vauldex.poin.controllers.MerchantController.getExpirySettings
+GET       /merchants/settings            	   tech.vauldex.poin.controllers.MerchantController.getSettings
+GET       /merchants/passes/:idPass/histories  tech.vauldex.poin.controllers.MerchantController.allHistoriesFromPass(idPass: String)
+GET       /merchants/passes/histories  			tech.vauldex.poin.controllers.MerchantController.allPassHistories
+PATCH     /merchants/passes/:idPass/renew 		tech.vauldex.poin.controllers.MerchantController.renewPass(idPass: String)
+PUT     /merchants/tiers   						tech.vauldex.poin.controllers.MerchantController.upSertTier(optId: Option[UUID])
+GET      /merchants/tiers               		tech.vauldex.poin.controllers.MerchantController.myTiers
+DELETE   /merchants/tiers/:id           		tech.vauldex.poin.controllers.MerchantController.deleteTier(id: UUID)
+POST     /merchants/checkout/:locale    		tech.vauldex.poin.controllers.StripeController.checkoutSession(locale: Option[String])
+# HEALTH CHECK
+GET       /health-check                 		tech.vauldex.poin.controllers.HealthCheckController.get
+
+
+# Apple Wallet Pass Routes
+GET       /v1/passes/:passTypeIdentifierentifier/:serialNumber                                      tech.vauldex.poin.controllers.ApplePassController.fetchPassUpdates(passTypeIdentifier: String, serialNumber: String)
+
+GET       /passes/v1/devices/:idDevice/registrations/:passId                           tech.vauldex.poin.controllers.ApplePassController.registerDevice(idDevice: String, passId: String, serialNumber: String)
+
+GET       /v1/devices/:idDevice/registrations/:passTypeIdentifierentifier                     tech.vauldex.poin.controllers.ApplePassController.listOfUpdatablePass(idDevice: String, passTypeIdentifier: String)
+
+POST      /v1/devices/:idDevice/registrations/:passId/:serialNumber             tech.vauldex.poin.controllers.ApplePassController.registerDevice(idDevice: String, passId: String, serialNumber: String)
+POST      /v1/log       tech.vauldex.poin.controllers.ApplePassController.appleLogger
+
+DELETE    /v1/devices/:idDevice/registrations/:passId/:serialNumber             tech.vauldex.poin.controllers.ApplePassController.unRegisterDevice(idDevice: String, passId: String, serialNumber: String)
+
+#GOOGLE
+POST  /google/wallets 		tech.vauldex.poin.controllers.GoogleWalletController.verifyMessage
+
+GET   /*file                 controllers.Assets.versioned(path="/public", file: Asset)
+
+#STRIPE
+POST     /webhook                        tech.vauldex.poin.controllers.StripeController.webhook
